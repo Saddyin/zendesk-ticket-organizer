@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zendesk Ticket Organizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        input[type="text"]:invalid,
+        input[type="number"]:invalid {
+            border-color: #dc3545;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .view-tickets-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .view-tickets-link:hover {
+            text-decoration: underline;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎫 Zendesk Ticket Organizer</h1>
+
+        <form id="ticketForm" action="/submit" method="POST" novalidate>
+            <div class="form-group">
+                <label for="ticketNumber">
+                    Ticket Number <span class="required">*</span>
+                </label>
+                <input type="text" id="ticketNumber" name="ticketNumber" required maxlength="5" pattern="[0-9]{1,5}"
+                    placeholder="Enter ticket number (1-99999)" autocomplete="off">
+                <div class="help-text">Enter a numeric ticket number (maximum 5 digits)</div>
+                <div id="ticketNumberError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="category">
+                    Category <span class="required">*</span>
+                </label>
+                <select id="category" name="category" required>
+                    <option value="">-- Select a Category --</option>
+                    <option value="Category 1">Category 1</option>
+                    <option value="Category 2">Category 2</option>
+                    <option value="Category 3">Category 3</option>
+                    <option value="Category 4">Category 4</option>
+                    <option value="Category 5">Category 5</option>
+                </select>
+                <div id="categoryError" class="error-message"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                📤 Submit Ticket
+            </button>
+        </form>
+
+        <a href="/tickets" class="view-tickets-link">
+            📊 View All Submitted Tickets
+        </a>
+    </div>
+
+    <script>
+        // Client-side validation
+        const form = document.getElementById('ticketForm');
+        const ticketNumberInput = document.getElementById('ticketNumber');
+        const categorySelect = document.getElementById('category');
+        const ticketNumberError = document.getElementById('ticketNumberError');
+        const categoryError = document.getElementById('categoryError');
+
+        // Real-time validation for ticket number
+        ticketNumberInput.addEventListener('input', function () {
+            validateTicketNumber();
+        });
+
+        // Validation for category selection
+        categorySelect.addEventListener('change', function () {
+            validateCategory();
+        });
+
+        // Form submission validation
+        form.addEventListener('submit', function (e) {
+            const isTicketValid = validateTicketNumber();
+            const isCategoryValid = validateCategory();
+
+            if (!isTicketValid || !isCategoryValid) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        function validateTicketNumber() {
+            const value = ticketNumberInput.value.trim();
+            const errorElement = ticketNumberError;
+
+            // Clear previous error
+            errorElement.style.display = 'none';
+            ticketNumberInput.style.borderColor = '#ddd';
+
+            if (!value) {
+                showError(errorElement, 'Ticket number is required');
+                return false;
+            }
+
+            // Check if it's a valid number
+            if (!/^\d+$/.test(value)) {
+                showError(errorElement, 'Ticket number must contain only digits');
+                return false;
+            }
+
+            // Check length (max 5 digits)
+            if (value.length > 5) {
+                showError(errorElement, 'Ticket number cannot exceed 5 digits');
+                return false;
+            }
+
+            // Check if it's within valid range
+            const numValue = parseInt(value);
+            if (numValue < 1 || numValue > 99999) {
+                showError(errorElement, 'Ticket number must be between 1 and 99999');
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateCategory() {
+            const value = categorySelect.value;
+            const errorElement = categoryError;
+
+            // Clear previous error
+            errorElement.style.display = 'none';
+            categorySelect.style.borderColor = '#ddd';
+
+            if (!value) {
+                showError(errorElement, 'Please select a category');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showError(errorElement, message) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            errorElement.previousElementSibling.previousElementSibling.style.borderColor = '#dc3545';
+        }
+
+        // Prevent non-numeric input and limit to 5 digits
+        ticketNumberInput.addEventListener('keypress', function (e) {
+            // Allow backspace, delete, tab, escape, enter, arrow keys
+            if ([8, 9, 27, 13, 46, 37, 38, 39, 40].indexOf(e.keyCode) !== -1 ||
+                // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+Z
+                (e.ctrlKey && [65, 67, 86, 88, 90].indexOf(e.keyCode) !== -1)) {
+                return;
+            }
+
+            // Prevent input if already at max length (5 digits)
+            if (this.value.length >= 5) {
+                e.preventDefault();
+                return;
+            }
+
+            // Only allow numeric characters (0-9)
+            if (e.keyCode < 48 || e.keyCode > 57) {
+                e.preventDefault();
+            }
+        });
+
+        // Handle paste events - clean and limit to 5 digits
+        ticketNumberInput.addEventListener('paste', function (e) {
+            setTimeout(function () {
+                let value = ticketNumberInput.value;
+                // Remove non-numeric characters
+                value = value.replace(/\D/g, '');
+                // Limit to 5 digits
+                if (value.length > 5) {
+                    value = value.substring(0, 5);
+                }
+                ticketNumberInput.value = value;
+                validateTicketNumber();
+            }, 1);
+        });
+    </script>
+</body>
+
+</html>
