@@ -40,7 +40,8 @@
 
         input[type="text"],
         input[type="number"],
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #ddd;
@@ -52,13 +53,15 @@
 
         input[type="text"]:focus,
         input[type="number"]:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #007bff;
         }
 
         input[type="text"]:invalid,
-        input[type="number"]:invalid {
+        input[type="number"]:invalid,
+        textarea:invalid {
             border-color: #dc3545;
         }
 
@@ -131,18 +134,51 @@
             </div>
 
             <div class="form-group">
+                <label for="ticketTitle">
+                    Ticket Title <span class="required">*</span>
+                </label>
+                <input type="text" id="ticketTitle" name="ticketTitle" required maxlength="100"
+                    placeholder="Brief title of the issue (e.g., 'Cannot access Gmail')" autocomplete="off">
+                <div class="help-text">Short description of the problem</div>
+                <div id="ticketTitleError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="ticketDescription">
+                    Description <span class="required">*</span>
+                </label>
+                <textarea id="ticketDescription" name="ticketDescription" required maxlength="500" rows="4"
+                    placeholder="Detailed description of the issue and any error messages..."></textarea>
+                <div class="help-text">Detailed explanation of the problem (maximum 500 characters)</div>
+                <div id="ticketDescriptionError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
                 <label for="category">
                     Category <span class="required">*</span>
                 </label>
                 <select id="category" name="category" required>
                     <option value="">-- Select a Category --</option>
-                    <option value="Category 1">Category 1</option>
-                    <option value="Category 2">Category 2</option>
-                    <option value="Category 3">Category 3</option>
-                    <option value="Category 4">Category 4</option>
-                    <option value="Category 5">Category 5</option>
+                    <option value="Email Issues">Email Issues</option>
+                    <option value="Login Problems">Login Problems</option>
+                    <option value="Software Installation">Software Installation</option>
+                    <option value="Network Connectivity">Network Connectivity</option>
+                    <option value="Hardware Issues">Hardware Issues</option>
                 </select>
                 <div id="categoryError" class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="status">
+                    Status <span class="required">*</span>
+                </label>
+                <select id="status" name="status" required>
+                    <option value="">-- Select Status --</option>
+                    <option value="Open">Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Solved">Solved</option>
+                </select>
+                <div id="statusError" class="error-message"></div>
             </div>
 
             <button type="submit" class="submit-btn">
