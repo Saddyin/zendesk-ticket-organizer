@@ -106,13 +106,13 @@ function getCommonKeywords(ticket1, ticket2) {
 }
 
 function getStatusBadge(status) {
-    const colors = {
-        'Open': '#dc3545',
-        'In Progress': '#ffc107',
-        'Solved': '#28a745'
+    const statusConfig = {
+        'Open': { bg: '#dc3545', text: 'white' },
+        'In Progress': { bg: '#fd7e14', text: 'white' },
+        'Solved': { bg: '#198754', text: 'white' }
     };
-    const color = colors[status] || '#6c757d';
-    return `<span style="background-color: ${color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${status}</span>`;
+    const config = statusConfig[status] || { bg: '#6c757d', text: 'white' };
+    return `<span style="background-color: ${config.bg}; color: ${config.text}; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; display: inline-block;">${status}</span>`;
 }
 
 function highlightKeywords(text, keywords) {
@@ -188,7 +188,7 @@ app.get('/tickets', (req, res) => {
         <style>
             body {
                 font-family: Arial, sans-serif;
-                max-width: 800px;
+                max-width: 1000px;
                 margin: 0 auto;
                 padding: 20px;
                 background-color: #f5f5f5;
@@ -204,24 +204,86 @@ app.get('/tickets', (req, res) => {
                 text-align: center;
                 margin-bottom: 30px;
             }
+            
+            /* Desktop table styles */
+            .table-container {
+                overflow-x: auto;
+                margin-bottom: 20px;
+            }
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 20px;
+                min-width: 700px;
             }
             th, td {
                 padding: 12px;
                 text-align: left;
                 border-bottom: 1px solid #ddd;
+                white-space: nowrap;
             }
             th {
                 background-color: #f8f9fa;
                 font-weight: bold;
                 color: #555;
+                position: sticky;
+                top: 0;
+                z-index: 10;
             }
             tr:hover {
                 background-color: #f8f9fa;
             }
+            
+            /* Mobile card layout */
+            .mobile-cards {
+                display: none;
+            }
+            .ticket-card {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                padding: 15px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            .ticket-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .ticket-number {
+                font-weight: bold;
+                color: #007bff;
+                text-decoration: none;
+                font-size: 16px;
+            }
+            .ticket-title {
+                color: #333;
+                text-decoration: none;
+                font-size: 14px;
+                margin: 5px 0;
+                display: block;
+            }
+            .ticket-meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 12px;
+                color: #666;
+                margin-top: 10px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .ticket-category {
+                background-color: #e9ecef;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                color: #495057;
+            }
+            
             .no-tickets {
                 text-align: center;
                 color: #666;
@@ -231,12 +293,13 @@ app.get('/tickets', (req, res) => {
             .back-link {
                 display: inline-block;
                 margin-top: 20px;
-                padding: 10px 20px;
+                padding: 12px 24px;
                 background-color: #007bff;
                 color: white;
                 text-decoration: none;
-                border-radius: 4px;
+                border-radius: 6px;
                 transition: background-color 0.2s;
+                font-weight: 500;
             }
             .back-link:hover {
                 background-color: #0056b3;
@@ -248,6 +311,35 @@ app.get('/tickets', (req, res) => {
                 margin-bottom: 20px;
                 text-align: center;
                 color: #495057;
+            }
+            
+            /* Mobile responsive styles */
+            @media (max-width: 768px) {
+                body {
+                    padding: 10px;
+                }
+                .container {
+                    padding: 20px;
+                }
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+                .table-container {
+                    display: none;
+                }
+                .mobile-cards {
+                    display: block;
+                }
+                .stats {
+                    padding: 12px;
+                    font-size: 14px;
+                }
+                .back-link {
+                    width: 100%;
+                    text-align: center;
+                    box-sizing: border-box;
+                }
             }
         </style>
     </head>
@@ -265,38 +357,64 @@ app.get('/tickets', (req, res) => {
                 No tickets have been submitted yet.
             </div>`;
     } else {
-        html += `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ticket #</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Submitted At</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-        
         // Sort tickets by submission time (most recent first)
         const sortedTickets = tickets.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // Desktop table layout
+        html += `
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticket #</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Submitted At</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
         
         sortedTickets.forEach(ticket => {
             const formattedDate = new Date(ticket.timestamp).toLocaleString();
             const statusBadge = getStatusBadge(ticket.status);
             html += `
-                    <tr>
-                        <td><a href="/ticket/${ticket.id}" style="color: #007bff; text-decoration: none;"><strong>#${ticket.ticketNumber}</strong></a></td>
-                        <td><a href="/ticket/${ticket.id}" style="color: #333; text-decoration: none;">${ticket.title || 'No title'}</a></td>
-                        <td>${ticket.category}</td>
-                        <td>${statusBadge}</td>
-                        <td>${formattedDate}</td>
-                    </tr>`;
+                        <tr>
+                            <td><a href="/ticket/${ticket.id}" style="color: #007bff; text-decoration: none;"><strong>#${ticket.ticketNumber}</strong></a></td>
+                            <td><a href="/ticket/${ticket.id}" style="color: #333; text-decoration: none;">${ticket.title || 'No title'}</a></td>
+                            <td>${ticket.category}</td>
+                            <td>${statusBadge}</td>
+                            <td>${formattedDate}</td>
+                        </tr>`;
         });
         
         html += `
-                </tbody>
-            </table>`;
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Mobile card layout -->
+            <div class="mobile-cards">`;
+        
+        sortedTickets.forEach(ticket => {
+            const formattedDate = new Date(ticket.timestamp).toLocaleString();
+            const statusBadge = getStatusBadge(ticket.status);
+            html += `
+                <div class="ticket-card">
+                    <div class="ticket-card-header">
+                        <a href="/ticket/${ticket.id}" class="ticket-number">#${ticket.ticketNumber}</a>
+                        ${statusBadge}
+                    </div>
+                    <a href="/ticket/${ticket.id}" class="ticket-title">${ticket.title || 'No title'}</a>
+                    <div class="ticket-meta">
+                        <span class="ticket-category">${ticket.category}</span>
+                        <span>${formattedDate}</span>
+                    </div>
+                </div>`;
+        });
+        
+        html += `
+            </div>`;
     }
     
     html += `
@@ -413,19 +531,53 @@ app.get('/ticket/:id', (req, res) => {
             .back-link {
                 display: inline-block;
                 margin-bottom: 20px;
-                padding: 10px 20px;
-                background-color: #6c757d;
+                padding: 12px 24px;
+                background-color: #007bff;
                 color: white;
                 text-decoration: none;
-                border-radius: 4px;
+                border-radius: 6px;
+                font-weight: 500;
+                transition: background-color 0.2s;
             }
             .back-link:hover {
-                background-color: #545b62;
+                background-color: #0056b3;
             }
             mark {
                 background-color: #ffeb3b;
                 padding: 2px;
                 border-radius: 2px;
+            }
+            
+            /* Mobile responsive styles for ticket detail */
+            @media (max-width: 768px) {
+                body {
+                    padding: 10px;
+                }
+                .container {
+                    padding: 20px;
+                }
+                h1 {
+                    font-size: 24px;
+                    line-height: 1.3;
+                }
+                h2 {
+                    font-size: 20px;
+                }
+                .ticket-meta {
+                    grid-template-columns: 1fr;
+                    gap: 10px;
+                }
+                .back-link {
+                    width: 100%;
+                    text-align: center;
+                    box-sizing: border-box;
+                }
+                .similar-ticket {
+                    padding: 12px;
+                }
+                .description {
+                    padding: 12px;
+                }
             }
         </style>
     </head>
