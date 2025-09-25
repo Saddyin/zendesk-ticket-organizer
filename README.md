@@ -21,11 +21,22 @@ A comprehensive Node.js + Express application that allows staff to categorize Ze
 - ✅ **Similarity scoring** - Percentage-based match confidence
 - ✅ **Real-time analysis** - Instant similarity detection on submission
 
+### 🎨 **UI/UX Features**
+- ✅ **Mobile-responsive design** - Adaptive layouts for desktop and mobile
+- ✅ **Status badges** - Color-coded status indicators (Open: Red, In Progress: Orange, Solved: Green)
+- ✅ **Desktop table view** - Full-featured table with sortable columns
+- ✅ **Mobile card view** - Touch-friendly card layout for small screens
+- ✅ **Blue navigation buttons** - Consistent button styling throughout
+- ✅ **Hover effects** - Interactive elements with visual feedback
+- ✅ **Modern shadows and borders** - Clean, professional appearance
+
 ### 🛠️ **Development Features**
-- ✅ Hot reload with nodemon for HTML/JS changes
+- ✅ Hot reload with nodemon for server changes
 - ✅ Client-side and server-side validation
 - ✅ Clean, responsive UI with modern design
 - ✅ Comprehensive error handling
+- ✅ Sticky table headers for better navigation
+- ✅ Automatic ticket sorting by submission time
 
 ## Quick Start
 
@@ -135,25 +146,47 @@ Prepares text for similarity analysis by extracting meaningful terms.
 - **Good matches:** 50-80% - Tickets with substantial keyword overlap
 - **High matches:** 80%+ - Nearly identical issues
 
+## Mobile-Responsive Design
+
+### 📱 **Responsive Breakpoints**
+- **Desktop (768px+)**: Full table layout with horizontal scrolling
+- **Mobile (<768px)**: Card-based layout optimized for touch
+
+### 🎨 **Status Badge Colors**
+- **Open**: `#dc3545` (Red) - Urgent attention needed
+- **In Progress**: `#fd7e14` (Orange) - Work in progress
+- **Solved**: `#198754` (Green) - Completed successfully
+
+### 📋 **Layout Features**
+- **Desktop Table**: Sortable columns, sticky headers, hover effects
+- **Mobile Cards**: Touch-friendly cards with status badges in header
+- **Navigation**: Blue buttons with consistent styling and hover states
+- **Typography**: Responsive font sizes and proper contrast ratios
+
 ## File Structure
 
 ```
 ├── package.json          # Project dependencies and scripts
 ├── package-lock.json     # Locked dependency versions
-├── server.js             # Express server with similarity algorithms
-├── index.html            # Enhanced form with title/description fields
+├── server.js             # Express server with similarity algorithms and embedded HTML/CSS
+├── index.html            # Enhanced form with title/description fields and validation
 ├── nodemon.json          # Development server configuration
 ├── .gitignore           # Git ignore rules for Node.js projects
 └── README.md            # This comprehensive documentation
 ```
+
+**Note**: All HTML, CSS, and JavaScript are embedded within the respective files for simplicity. The server.js contains the tickets list and detail page HTML/CSS, while index.html contains the form page with embedded styles and validation scripts.
 
 ## Technical Details
 
 - **Backend**: Node.js with Express framework
 - **Frontend**: Plain HTML with vanilla JavaScript validation
 - **Storage**: In-memory array with enhanced ticket data model
-- **Port**: 3000 (configurable)
+- **Port**: 3000 (configurable via PORT environment variable)
 - **Algorithms**: Jaccard similarity, keyword extraction, stop word filtering
 - **Validation**: Both client-side (real-time) and server-side validation
-- **Development**: Hot reload with nodemon for HTML/JS changes
+- **Development**: Hot reload with nodemon for server changes
 - **Similarity Detection**: Real-time analysis with keyword highlighting
+- **Responsive Design**: Mobile-first approach with breakpoint at 768px
+- **Status Badges**: Enhanced color-coded status indicators
+- **UI Framework**: Custom CSS with modern design patterns
